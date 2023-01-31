@@ -1,7 +1,8 @@
 @extends("home")
 
 @section("content")
-<h2>Show</h2>
+<div class="container">
+    <h2>Show</h2>
 
 <table class="table table-striped">
     <thead>
@@ -11,6 +12,7 @@
         <th>Series</th>
         <th>Sale date</th>
         <th>Type</th>
+        <th></th>
     </thead>
     
     <tbody>
@@ -22,8 +24,19 @@
                 <td>{{$comic->series}}</td>
                 <td>{{$comic->sale_date}}</td>
                 <td>{{$comic->type}}</td>
+                <td>
+                    <form action="{{route('comics.destroy',$comic->id) }}" method="POST">
+                        @csrf                        
+                        @method("delete")
+                        <button class="btn btn-danger">Elimina</button>
+                    </form>
+                </td>
             </tr>
 
     </tbody>
 </table>
+<div>
+    <a class="btn btn-primary" href="{{route("comics.index")}}">&#8630; Indietro</a>
+</div>
+</div>
 @endsection

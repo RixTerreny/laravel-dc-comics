@@ -45,15 +45,17 @@ class ComicController extends Controller
         $comic ->price = (float) $data["price"];
         $comic ->series = $data["series"];
         $comic ->sale_date = $data["sale_date"];
-        $comic ->type = json_encode(["fghr"]);
+        $comic ->type = json_encode("fghr");
         $comic ->created_at = $data["created_at"];
         $comic->save();
+
+        return redirect()->route('comics.show', $comic->id);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id 
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -70,7 +72,13 @@ class ComicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comic= Comic::find($id);
+
+        if(!$comic){
+            abort(404,"non disponibile");
+        }else{
+            return view("comics.edit", compact("comic"));
+        }
     }
 
     /**
@@ -82,7 +90,20 @@ class ComicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $comic = Comic::findOrFail($id);
+
+        $comic ->title = $data["title"];
+        $comic ->description = $data["description"];
+        $comic ->thumb = $data["thumb"];
+        $comic ->price = (float) $data["price"];
+        $comic ->series = $data["series"];
+        $comic ->sale_date = $data["sale_date"];
+        $comic ->type = json_encode("changed");
+        $comic ->created_at = $data["created_at"];
+        $comic->save();
+
+        return redirect()->route('comics.show', $comic->id);
     }
 
     /**
@@ -93,6 +114,10 @@ class ComicController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comic = Comic::findOrFail($id);
+
+        $comic->delete();
+
+        return redirect()->route('comics.index');
     }
 }

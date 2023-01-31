@@ -10,6 +10,6 @@
 </head>
 <body>
     <h1 class="container text-center">Dc Comics</h1>
-    @include('partials.show')
+    @yield("content")
 </body>
 </html>

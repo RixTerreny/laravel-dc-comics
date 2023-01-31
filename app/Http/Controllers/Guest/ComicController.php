@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-class ResourceController extends Controller
+use App\Models\Comic;
+class ComicController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class ResourceController extends Controller
      */
     public function index()
     {
-        //
+        $comics=Comic::all();
+        return view("comics.index",compact("comics"));
     }
 
     /**
@@ -24,7 +25,7 @@ class ResourceController extends Controller
      */
     public function create()
     {
-        //
+        return view("comics.create");
     }
 
     /**
@@ -35,7 +36,18 @@ class ResourceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data= $request->all();
+
+        $comic = new Comic();
+        $comic ->title = $data["title"];
+        $comic ->description = $data["description"];
+        $comic ->thumb = $data["thumb"];
+        $comic ->price = (float) $data["price"];
+        $comic ->series = $data["series"];
+        $comic ->sale_date = $data["sale_date"];
+        $comic ->type = json_encode(["fghr"]);
+        $comic ->created_at = $data["created_at"];
+        $comic->save();
     }
 
     /**
@@ -46,7 +58,8 @@ class ResourceController extends Controller
      */
     public function show($id)
     {
-        //
+        $comic= Comic::findOrFail($id);
+        return view("comics.show",compact('comic'));
     }
 
     /**
